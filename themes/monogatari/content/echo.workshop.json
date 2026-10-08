@@ -1,0 +1,45 @@
+{
+  "type": "echo-workshop-item",
+  "schemaVersion": 1,
+  "id": "echio.monogatari-lyrics",
+  "title": "余白 · 物语歌词",
+  "version": "1.0.1",
+  "content": {
+    "kind": "theme",
+    "entry": "theme.json"
+  },
+  "compatibility": {
+    "minEchoVersion": "26.9.16"
+  },
+  "files": [
+    {
+      "path": "theme.json",
+      "size": 451,
+      "sha256": "b39391e6ac7db63e4dd7460d79181f2bc71569cf5300b71c0aa2bd52799eadcd"
+    },
+    {
+      "path": "ui/app.css",
+      "size": 6574,
+      "sha256": "9382e711d2e35b70e4ab5c227c9349d2fba185f4166f23e89ec0d845ab4b7cd2"
+    },
+    {
+      "path": "ui/app.js",
+      "size": 8392,
+      "sha256": "76de8acece7a1be2d5bd7484566ba9edbc8ee6401b8350ad97fa0c9194862ab4"
+    },
+    {
+      "path": "ui/index.html",
+      "size": 1863,
+      "sha256": "520dd4a6e7f1c451a46bd2b687eaa8b62e29d08142d1f75dfa3fcf8dc212360d"
+    },
+    {
+      "path": "ui/texture.png",
+      "size": 230230,
+      "sha256": "f930303fa3e879e80225d360a93d97b8aebcd9d74bb9b2f7c60c701afeba6cfb"
+    }
+  ],
+  "license": {
+    "id": "MIT",
+    "holder": "Monogatari Lyrics contributors"
+  }
+}

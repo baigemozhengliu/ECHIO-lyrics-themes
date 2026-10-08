@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="zh-CN" data-palette="red">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>余白 · 物语歌词</title><link rel="stylesheet" href="app.css"></head>
+<body>
+<main id="stage">
+  <header><span class="brand">ECHO</span><button id="play" aria-label="播放或暂停" disabled>WAITING —</button></header>
+  <aside class="left-rail"><span id="chapter">TRACK —</span><i></i></aside>
+  <aside class="right-rail"><time id="time">00:00 / 00:00</time><i></i></aside>
+  <section class="verse" aria-label="当前歌词"><div id="lyric-pair"><button id="line" disabled>余白</button><p id="translation"></p></div><p id="empty"></p></section>
+  <footer><div><span class="label">TITLE</span><span id="title">尚未播放</span></div><div class="album"><span class="label">ALBUM</span><span id="album">—</span></div><div class="artist"><span class="label">ARTIST</span><span id="artist">—</span></div></footer>
+  <input id="progress" type="range" min="0" max="1000" value="0" step="1" aria-label="播放进度" disabled>
+  <nav aria-label="歌词页面外观"><div class="palettes"><button data-palette="red" aria-label="赤 · 朱红" aria-pressed="true">赤</button><button data-palette="yellow" aria-label="黄 · 芥黄" aria-pressed="false">黄</button><button data-palette="black" aria-label="黑 · 墨色" aria-pressed="false">黑</button><button data-palette="white" aria-label="白 · 纸色" aria-pressed="false">白</button></div><button id="direction" aria-pressed="false">竖排</button><button id="translate" aria-pressed="false">译文</button><button id="smaller" aria-label="缩小歌词字号">小</button><button id="larger" aria-label="放大歌词字号">大</button></nav>
+  <div id="notice" role="status"></div>
+</main><script src="app.js"></script></body></html>

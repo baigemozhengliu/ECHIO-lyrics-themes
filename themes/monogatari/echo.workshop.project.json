@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "appId": "5105090",
+  "publishedFileId": "0",
+  "contentDirectory": "content",
+  "previewFile": "preview.png",
+  "visibility": "private",
+  "description": "余白：ECHO 歌词主题。四色背景、横竖排、可调字号、整句小字译注。顶部中央切换外观，右上暂停，底部定位。 单色文字配合微弱辉光与纸张纹理，支持未同步歌词、前奏、纯音乐状态。只读取当前歌曲，不需要网络或系统权限。",
+  "changeNote": "Fix repeated lyric flashing and stale-clock fallback; add direction-aware marginal translation.",
+  "tags": [
+    "Theme"
+  ]
+}

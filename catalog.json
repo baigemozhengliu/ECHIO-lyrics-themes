@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "title": "ECHIO：歌词主题",
+  "themes": [
+    {
+      "id": "monogatari",
+      "name": "余白 · 物语歌词",
+      "version": "1.0.1",
+      "path": "themes/monogatari",
+      "download": "downloads/monogatari-1.0.1.zip",
+      "minEchoVersion": "26.9.16",
+      "license": "MIT",
+      "palettes": [
+        "red",
+        "yellow",
+        "black",
+        "white"
+      ],
+      "layouts": [
+        "horizontal",
+        "vertical"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "type": "echo-workshop-theme-preset",
+  "schemaVersion": 1,
+  "id": "echio.monogatari-lyrics",
+  "title": "余白 · 物语歌词",
+  "basePreset": "classic",
+  "runtime": {
+    "entry": "ui/index.html",
+    "presentation": "lyrics-view",
+    "capabilities": [
+      "playback:read",
+      "playback:control",
+      "lyrics:read"
+    ]
+  },
+  "light": {
+    "accent": "#ac160d"
+  },
+  "dark": {
+    "accent": "#ac160d"
+  }
+}
