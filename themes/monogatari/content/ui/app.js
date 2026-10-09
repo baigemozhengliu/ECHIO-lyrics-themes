@@ -4,13 +4,20 @@
   let clock = null, doc = null, track = null, interval = null, raf = null, lastDraw = 0, key = '', request = 0;
   let features = [], capabilities = [], visible = true, dragging = false, size = 36;
   let primaryClock = null, fallbackClock = null;
+  let lyricTrack = null, lyricEpoch = 0, asked = false;
+  const hasLyrics = value => value && (value.kind === 'instrumental' || (value.kind !== 'empty' && (value.lines?.length || value.plainText)));
   const timestamp = () => performance.timeOrigin + performance.now();
   const pending = new Map();
   const post = data => parent.postMessage({protocolVersion:1,...data}, '*');
-  const command = (name,payload={}) => { const requestId=String(++request); pending.set(requestId,name); if(pending.size>32)pending.delete(pending.keys().next().value);post({type:'echo:workshop-ui:command',requestId,command:name,payload}); };
+  const command = (name,payload={}) => { const requestId=String(++request); pending.set(requestId,{name,trackId:payload.trackId,epoch:lyricEpoch}); if(pending.size>32)pending.delete(pending.keys().next().value);post({type:'echo:workshop-ui:command',requestId,command:name,payload}); };
   const fmt = n => { n=Math.max(0,Math.floor(Number(n)||0)); return `${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`; };
   const position = () => { if(!clock)return 0;const elapsed=Math.max(0,Math.min(1500,performance.timeOrigin+performance.now()-clock.sampledAtMs));return Math.max(0,Math.min(clock.durationSeconds||Infinity,clock.positionSeconds+(clock.state==='playing'?elapsed*(clock.playbackRate||1)/1000:0))); };
   function render(){
+    const currentId = clock?.currentTrackId ?? null;
+    if(currentId !== lyricTrack){lyricTrack=currentId;lyricEpoch++;asked=false;}
+    if(currentId && !asked && capabilities.includes('lyrics:read') && !(doc?.trackId===currentId && hasLyrics(doc.lyrics))){
+      asked=true;command('lyrics:get',{trackId:currentId});
+    }
     const lyrics=doc&&doc.trackId===clock?.currentTrackId?doc.lyrics:null, lines=lyrics?.lines||[], ms=position()*1000+(lyrics?.offsetMs||0);
     let index=-1; if(lyrics?.kind==='synced')for(let i=0;i<lines.length;i++)if(lines[i].timeMs<=ms)index=i;
     const active=lyrics?.kind==='synced'?lines[index]:null;
@@ -70,7 +77,16 @@
         }
       }
     }
-    if(m.type==='echo:workshop-ui:result'&&pending.has(m.requestId)){pending.delete(m.requestId);$('notice').textContent=m.ok?'':`操作未完成：${m.error||'宿主未接受请求'}`;}
+    if(m.type==='echo:workshop-ui:result'&&pending.has(m.requestId)){
+      const query=pending.get(m.requestId);pending.delete(m.requestId);
+      if(query.name==='lyrics:get'){
+        // Bind a pull result to its request, never to whichever song is now playing.
+        if(m.ok && query.epoch===lyricEpoch && query.trackId===clock?.currentTrackId && !(doc?.trackId===query.trackId && hasLyrics(doc.lyrics))){
+          const value=m.value;
+          if(value && ['empty','plain','synced','instrumental'].includes(value.kind) && Array.isArray(value.lines))doc={trackId:query.trackId,revision:-1,lyrics:value};
+        }
+      }else $('notice').textContent=m.ok?'':`操作未完成：${m.error||'宿主未接受请求'}`;
+    }
     restart();
   });
   $('play').onclick=()=>command('playPause');

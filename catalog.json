@@ -5,9 +5,9 @@
     {
       "id": "monogatari",
       "name": "余白 · 物语歌词",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "path": "themes/monogatari",
-      "download": "downloads/monogatari-1.0.1.zip",
+      "download": "downloads/monogatari-1.0.2.zip",
       "minEchoVersion": "26.9.16",
       "license": "MIT",
       "palettes": [

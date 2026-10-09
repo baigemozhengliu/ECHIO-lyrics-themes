@@ -2,7 +2,7 @@
 
 单句歌词、大留白、宋体／明朝体、轻微辉光与纸纹。提供朱红、芥黄、墨黑、纸白四种配色。
 
-**[下载 1.0.1](../../downloads/monogatari-1.0.1.zip?raw=true)** · 最低 ECHO 版本：26.9.16（需支持 lyrics-view）
+**[下载 1.0.2](../../downloads/monogatari-1.0.2.zip?raw=true)** · 最低 ECHO 版本：26.9.16（需支持 lyrics-view）
 
 ## 使用
 
@@ -27,6 +27,12 @@
 ## 开发
 
 编辑 `content/ui/`。从仓库根目录运行 `python tools/package.py monogatari` 更新清单并打包（Python 3 标准库即可）。生产校验使用 [官方 SDK](https://github.com/Moekotori/echo-workshop-sdk)：`node <SDK目录>/bin/echo-workshop-sdk.mjs check themes/monogatari`。
+
+## 1.0.2
+
+采纳社区提供的 1.0.2 包中的主动索词方案：宿主未推送歌词时，通过 `lyrics:get` 读取当前曲；请求绑定歌曲及本次播放，避免切歌后旧请求串词。保留宿主后续歌词更新和纯音乐状态。本次未纳入依赖第三方 Loader Mod 的 MV 透底扩展。
+
+回归检查：仓库根目录运行 `node tools/runtime.test.mjs`。
 
 ## 1.0.1
 

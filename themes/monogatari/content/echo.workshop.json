@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "id": "echio.monogatari-lyrics",
   "title": "余白 · 物语歌词",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "content": {
     "kind": "theme",
     "entry": "theme.json"
@@ -24,13 +24,13 @@
     },
     {
       "path": "ui/app.js",
-      "size": 8392,
-      "sha256": "76de8acece7a1be2d5bd7484566ba9edbc8ee6401b8350ad97fa0c9194862ab4"
+      "size": 9603,
+      "sha256": "5fdd62b7c1b9c36970a1078b67e8497e91751d92dc5ddd72667ba3d3220ef68b"
     },
     {
       "path": "ui/index.html",
-      "size": 1863,
-      "sha256": "520dd4a6e7f1c451a46bd2b687eaa8b62e29d08142d1f75dfa3fcf8dc212360d"
+      "size": 1877,
+      "sha256": "e80a5cde5e3cd5a52a3155dff30788881db7cf95cab934e149ecac25a89e93e1"
     },
     {
       "path": "ui/texture.png",
