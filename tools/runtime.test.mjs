@@ -63,3 +63,37 @@ clock('return',0,'paused',15);const old=pull();clock('other',0,'paused',16);cloc
 reply(old,pulled);assert.equal(elements.get('line').textContent,'余白','previous visit response rejected');
 reply(pull(),{kind:'plain',lines:[],plainText:'plain pull'});assert.equal(elements.get('line').textContent,'plain pull');
 console.log('PASS: pull fallback, seek, late responses, revisit, push precedence, instrumental, failure, request deduplication, plain lyrics');
+
+// Recreate the iframe while retaining only host-owned storage.
+function settingsPage(saved){
+ const nodes=new Map(), events={}, messages=[], host={postMessage:m=>messages.push(m)}, html=new Element();
+ const styles={};html.style.setProperty=(k,v)=>styles[k]=v;
+ const palettes=['red','yellow','black','white'].map(p=>{const b=new Element();b.dataset.palette=p;return b;});
+ const dom={...document,documentElement:html,getElementById:id=>{if(!nodes.has(id))nodes.set(id,new Element());return nodes.get(id);},querySelectorAll:()=>palettes,addEventListener:(n,f)=>events[n]=f};
+ vm.runInNewContext(readFileSync(new URL('../themes/monogatari/content/ui/app.js',import.meta.url),'utf8'),{...context,document:dom,parent:host,window:{addEventListener:(n,f)=>events[n]=f}});
+ const send=m=>events.message({source:host,data:{protocolVersion:1,...m}});
+ const init=()=>send({type:'echo:workshop-ui:init',capabilities:['storage']});
+ const respond=(q,value,ok=true)=>send({type:'echo:workshop-ui:result',requestId:q.requestId,ok,value});
+ const writes=()=>messages.filter(m=>m.command==='storage:set');
+ init();const read=messages.find(m=>m.command==='storage:get');
+ return {nodes,html,styles,palettes,messages,init,respond,writes,restore:()=>respond(read,saved)};
+}
+const first=settingsPage(null);first.restore();assert.equal(first.writes().length,0);
+first.palettes[2].onclick();first.nodes.get('direction').onclick();first.nodes.get('translate').onclick();first.nodes.get('larger').onclick();
+assert.equal(first.writes().length,1,'serialize writes while first save is pending');
+first.respond(first.writes()[0],null);
+const stored=first.writes().at(-1).payload.value;
+assert.deepEqual(JSON.parse(JSON.stringify(stored)),{palette:'black',vertical:true,translation:true,size:40});
+first.respond(first.writes().at(-1),null);
+const reopened=settingsPage(stored);reopened.restore();
+assert.equal(reopened.html.dataset.palette,'black');assert.equal(reopened.palettes[2].getAttribute('aria-pressed'),'true');
+assert.equal(reopened.nodes.get('lyric-pair').classList.contains('vertical'),true);
+assert.equal(reopened.nodes.get('direction').textContent,'横排');
+assert.equal(reopened.html.classList.contains('show-translation'),true);assert.equal(reopened.styles['--lyric-size'],'40px');
+reopened.nodes.get('larger').onclick();assert.equal(reopened.styles['--lyric-size'],'44px','resize starts from restored size');
+const early=settingsPage(stored);early.palettes[1].onclick();early.restore();
+assert.equal(early.html.dataset.palette,'yellow','late read preserves user changes');assert.equal(early.styles['--lyric-size'],'40px','unedited values still restore');
+early.init();assert.equal(early.messages.filter(m=>m.command==='storage:get').length,1);
+const invalid=settingsPage({palette:'unknown',size:999,vertical:'true',translation:[]});invalid.restore();
+assert.equal(invalid.html.dataset.palette,'red');assert.equal(invalid.styles['--lyric-size'],'36px');assert.equal(invalid.html.classList.contains('show-translation'),false);
+console.log('PASS: settings survive iframe reopen; all four controls restore; rapid edits serialize; late reads preserve edits; invalid data uses defaults');

@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "appId": "5105090",
-  "publishedFileId": "0",
+  "publishedFileId": "3816161858",
   "contentDirectory": "content",
   "previewFile": "preview.png",
-  "visibility": "private",
-  "description": "余白：ECHO 歌词主题。四色背景、横竖排、可调字号、整句小字译注。顶部中央切换外观，右上暂停，底部定位。 单色文字配合微弱辉光与纸张纹理，支持未同步歌词、前奏、纯音乐状态。只读取当前歌曲，不需要网络或系统权限。",
-  "changeNote": "1.0.2: Read current lyrics when host push is missing; reject stale responses after switching tracks.",
+  "visibility": "public",
+  "description": "余白 · 物语歌词\n\n\n\n· 朱红、芥黄、墨黑、纸白四种配色\n· 横排与竖排自由切换\n· 歌词字号可调，译文可开关并随原文方向排列\n· 支持同步歌词与纯文本歌词\n\n使用方法\n订阅并等待下载完成，在 ECHO 创意工坊中启用本主题，然后打开歌词页。\n鼠标移到页面顶部中央，可调整颜色、排列、字号和译文；右上角暂停或继续，底部进度线可定位。\n\n如果仍显示旧歌词布局，请先将歌词布局切回 ECHO 内置。\n\n\n\n作者：baige\n源码：https://github.com/baigemozhengliu/ECHIO-lyrics-themes",
+  "changeNote": "1.0.3：自动记忆配色、横竖排、字号和译文开关，下次打开歌词页时恢复。",
   "tags": [
     "Theme"
   ]

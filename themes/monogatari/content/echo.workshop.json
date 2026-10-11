@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "id": "echio.monogatari-lyrics",
   "title": "余白 · 物语歌词",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "content": {
     "kind": "theme",
     "entry": "theme.json"
@@ -14,8 +14,8 @@
   "files": [
     {
       "path": "theme.json",
-      "size": 451,
-      "sha256": "b39391e6ac7db63e4dd7460d79181f2bc71569cf5300b71c0aa2bd52799eadcd"
+      "size": 624,
+      "sha256": "adfe3b67157fe52f50b95a386d88b9b50e70ba9cbf5cf122829c06376d132a36"
     },
     {
       "path": "ui/app.css",
@@ -24,8 +24,8 @@
     },
     {
       "path": "ui/app.js",
-      "size": 9603,
-      "sha256": "5fdd62b7c1b9c36970a1078b67e8497e91751d92dc5ddd72667ba3d3220ef68b"
+      "size": 11355,
+      "sha256": "d81f698a9ee8407048c1bf65d3f9752082981d80477529146a88a2a55d753257"
     },
     {
       "path": "ui/index.html",
@@ -40,6 +40,7 @@
   ],
   "license": {
     "id": "MIT",
-    "holder": "Monogatari Lyrics contributors"
+    "holder": "baige",
+    "sourceUrl": "https://github.com/baigemozhengliu/ECHIO-lyrics-themes/blob/main/LICENSE"
   }
 }

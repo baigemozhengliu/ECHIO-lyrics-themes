@@ -10,13 +10,16 @@
     "capabilities": [
       "playback:read",
       "playback:control",
-      "lyrics:read"
+      "lyrics:read",
+      "storage"
     ]
   },
   "light": {
     "accent": "#ac160d"
   },
   "dark": {
-    "accent": "#ac160d"
-  }
+    "accent": "#ac160d",
+    "motionEnabled": false
+  },
+  "description": "物语风格的 ECHO 歌词页面。四色背景、横竖排、可调字号和小字译文，搭配宋体微光与纸张纹理。"
 }

@@ -2,11 +2,11 @@
 
 单句歌词、大留白、宋体／明朝体、轻微辉光与纸纹。提供朱红、芥黄、墨黑、纸白四种配色。
 
-**[下载 1.0.2](../../downloads/monogatari-1.0.2.zip?raw=true)** · 最低 ECHO 版本：26.9.16（需支持 lyrics-view）
+**[下载 1.0.3](../../downloads/monogatari-1.0.3.zip?raw=true)** · 最低 ECHO 版本：26.9.16（需支持 lyrics-view）
 
 ## 使用
 
-把 ZIP 拖入 ECHO 创意工坊页面，导入后使用并打开歌词页。顶部中央的菜单可以选择颜色、横竖排、小字译文和字号；也可通过 Tab 访问。选项在本次打开期间有效。
+把 ZIP 拖入 ECHO 创意工坊页面，导入后使用并打开歌词页。顶部中央的菜单可以选择颜色、横竖排、小字译文和字号；也可通过 Tab 访问。四项设置自动保存在 ECHO 的主题存储中，下次打开时恢复，无需手动保存。首次使用默认朱红、横排、36 px、关闭译文。
 
 - 右上角：暂停／继续。
 - 底部进度线：定位；点击当前歌词：回到本句开头。
@@ -27,6 +27,10 @@
 ## 开发
 
 编辑 `content/ui/`。从仓库根目录运行 `python tools/package.py monogatari` 更新清单并打包（Python 3 标准库即可）。生产校验使用 [官方 SDK](https://github.com/Moekotori/echo-workshop-sdk)：`node <SDK目录>/bin/echo-workshop-sdk.mjs check themes/monogatari`。
+
+## 1.0.3
+
+新增外观记忆：配色、横竖排、字号和译文开关自动保存与恢复。声明官方 `storage` 能力；重新打开页面后继续使用上次的设置。
 
 ## 1.0.2
 

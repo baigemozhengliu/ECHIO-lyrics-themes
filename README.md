@@ -14,7 +14,7 @@
 
 | 主题 | 风格与功能 | 下载 |
 | --- | --- | --- |
-| [余白 · 物语歌词](themes/monogatari/) | 四种纯色、宋体微光、弱纹理、横竖排与小字译注 | [1.0.2 ZIP](downloads/monogatari-1.0.2.zip?raw=true) |
+| [余白 · 物语歌词](themes/monogatari/) | 四种纯色、宋体微光、弱纹理、横竖排与小字译注 | [1.0.3 ZIP](downloads/monogatari-1.0.3.zip?raw=true) |
 
 ### 余白 · 物语歌词
 

@@ -10,6 +10,25 @@
   const pending = new Map();
   const post = data => parent.postMessage({protocolVersion:1,...data}, '*');
   const command = (name,payload={}) => { const requestId=String(++request); pending.set(requestId,{name,trackId:payload.trackId,epoch:lyricEpoch}); if(pending.size>32)pending.delete(pending.keys().next().value);post({type:'echo:workshop-ui:command',requestId,command:name,payload}); };
+  let settings={palette:'red',vertical:false,translation:false,size:36};
+  let settingsRequested=false, settingsLoaded=false, settingsDirty=false, settingsSaving=false;
+  const editedSettings=new Set();
+  function applySettings(){
+    root.dataset.palette=settings.palette;
+    document.querySelectorAll('button[data-palette]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.palette===settings.palette)));
+    $('lyric-pair').classList.toggle('vertical',settings.vertical);
+    $('direction').setAttribute('aria-pressed',String(settings.vertical));$('direction').textContent=settings.vertical?'横排':'竖排';
+    root.classList.toggle('show-translation',settings.translation);$('translate').setAttribute('aria-pressed',String(settings.translation));
+    size=settings.size;root.style.setProperty('--lyric-size',`${size}px`);
+  }
+  function saveSettings(){
+    if(!settingsLoaded||!settingsDirty||settingsSaving||!capabilities.includes('storage'))return;
+    settingsDirty=false;settingsSaving=true;
+    command('storage:set',{key:'appearance',value:{...settings}});
+  }
+  function changeSetting(name,value){
+    settings[name]=value;editedSettings.add(name);settingsDirty=true;applySettings();saveSettings();
+  }
   const fmt = n => { n=Math.max(0,Math.floor(Number(n)||0)); return `${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`; };
   const position = () => { if(!clock)return 0;const elapsed=Math.max(0,Math.min(1500,performance.timeOrigin+performance.now()-clock.sampledAtMs));return Math.max(0,Math.min(clock.durationSeconds||Infinity,clock.positionSeconds+(clock.state==='playing'?elapsed*(clock.playbackRate||1)/1000:0))); };
   function render(){
@@ -62,6 +81,7 @@
     const m=event.data;
     if(m.type==='echo:workshop-ui:ping'){post({type:'echo:workshop-ui:pong'});return;}
     if(m.type==='echo:workshop-ui:init'){features=m.features||[];capabilities=m.capabilities||[];visible=m.uiContext?.visible!==false;root.classList.toggle('reduced-motion',!!m.uiContext?.reducedMotion);}
+    if(m.type==='echo:workshop-ui:init' && capabilities.includes('storage') && !settingsRequested){settingsRequested=true;command('storage:get',{key:'appearance'});}
     if(m.type==='echo:workshop-ui:clock'){setClock(m.clock);if(m.currentTrack!==undefined&&m.clock.currentTrackId===clock?.currentTrackId)track=m.currentTrack;interval=m.motion?.frameIntervalMs??null;}
     if(m.type==='echo:workshop-ui:lyrics'){if(!doc||m.trackId!==doc.trackId||m.revision>=doc.revision)doc=m;}
     if(m.type==='echo:workshop-ui:state'){
@@ -79,7 +99,17 @@
     }
     if(m.type==='echo:workshop-ui:result'&&pending.has(m.requestId)){
       const query=pending.get(m.requestId);pending.delete(m.requestId);
-      if(query.name==='lyrics:get'){
+      if(query.name==='storage:get'){
+        const saved=m.ok && m.value;
+        if(saved && typeof saved==='object'){
+          const valid={palette:['red','yellow','black','white'].includes(saved.palette),vertical:typeof saved.vertical==='boolean',translation:typeof saved.translation==='boolean',size:Number.isInteger(saved.size)&&saved.size>=24&&saved.size<=56};
+          for(const name of Object.keys(valid))if(valid[name]&&!editedSettings.has(name))settings[name]=saved[name];
+        }
+        settingsLoaded=true;applySettings();saveSettings();
+      }else if(query.name==='storage:set'){
+        settingsSaving=false;
+        if(m.ok)saveSettings();else {settingsDirty=true;$('notice').textContent='外观设置保存失败，请再次调整后重试';}
+      }else if(query.name==='lyrics:get'){
         // Bind a pull result to its request, never to whichever song is now playing.
         if(m.ok && query.epoch===lyricEpoch && query.trackId===clock?.currentTrackId && !(doc?.trackId===query.trackId && hasLyrics(doc.lyrics))){
           const value=m.value;
@@ -92,10 +122,10 @@
   $('play').onclick=()=>command('playPause');
   $('line').onclick=()=>{const lyrics=doc?.trackId===clock?.currentTrackId?doc?.lyrics:null;const ms=position()*1000+(lyrics?.offsetMs||0);const active=lyrics?.lines.filter(l=>l.timeMs<=ms).at(-1);if(active)command('seek',{positionSeconds:Math.max(0,(active.timeMs-(lyrics.offsetMs||0))/1000)});};
   $('progress').oninput=()=>{dragging=true;};$('progress').onchange=()=>{command('seek',{positionSeconds:Number($('progress').value)/1000*clock.durationSeconds});dragging=false;};$('progress').onblur=()=>{dragging=false;};
-  document.querySelectorAll('button[data-palette]').forEach(b=>b.onclick=()=>{root.dataset.palette=b.dataset.palette;document.querySelectorAll('button[data-palette]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));});
-  $('direction').onclick=()=>{const v=$('lyric-pair').classList.toggle('vertical');$('direction').setAttribute('aria-pressed',String(v));$('direction').textContent=v?'横排':'竖排';};
-  $('translate').onclick=()=>{const v=root.classList.toggle('show-translation');$('translate').setAttribute('aria-pressed',String(v));};
-  const resize=n=>{size=Math.max(24,Math.min(56,size+n));root.style.setProperty('--lyric-size',`${size}px`);};$('smaller').onclick=()=>resize(-4);$('larger').onclick=()=>resize(4);
+  document.querySelectorAll('button[data-palette]').forEach(b=>b.onclick=()=>changeSetting('palette',b.dataset.palette));
+  $('direction').onclick=()=>changeSetting('vertical',!settings.vertical);
+  $('translate').onclick=()=>changeSetting('translation',!settings.translation);
+  const resize=n=>changeSetting('size',Math.max(24,Math.min(56,size+n)));$('smaller').onclick=()=>resize(-4);$('larger').onclick=()=>resize(4);
   document.addEventListener('keydown',e=>{if(e.code==='Space'&&e.target===document.body&&!$('play').disabled){e.preventDefault();command('playPause');}});
   document.addEventListener('visibilitychange',restart);window.addEventListener('pagehide',()=>{stop();doc=null;clock=null;track=null;pending.clear();});
   render();post({type:'echo:workshop-ui:ready'});
