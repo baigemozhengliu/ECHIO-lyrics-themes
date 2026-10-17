@@ -1,0 +1,75 @@
+{
+  "type": "echo-workshop-item",
+  "schemaVersion": 1,
+  "id": "echio.el-telegraph-native",
+  "title": "回波·终端歌词",
+  "version": "1.0.7",
+  "content": {
+    "kind": "theme",
+    "entry": "theme.json"
+  },
+  "compatibility": {
+    "minEchoVersion": "26.10.16"
+  },
+  "license": {
+    "id": "MIT",
+    "holder": "EL Telegraph contributors"
+  },
+  "files": [
+    {
+      "path": "LICENSE",
+      "size": 1082,
+      "sha256": "90aadca3192600eb617d585cc01ed724213f6b4e62a4657f79e5082acff4af1b"
+    },
+    {
+      "path": "theme.json",
+      "size": 651,
+      "sha256": "e6f3aad29c62e0de825f3288434972d2324518fec7d7ab75d3cd7fa313d7819b"
+    },
+    {
+      "path": "ui/app.css",
+      "size": 31287,
+      "sha256": "dbcf8b7d944e73537ae55fedd21e86339b26684d0d11c90e994a274c064bc40b"
+    },
+    {
+      "path": "ui/app.js",
+      "size": 14633,
+      "sha256": "45f196b7906ddcf3e6656cc0333f7c6172081c9410c4cf2faf6bc6ad7ab4635a"
+    },
+    {
+      "path": "ui/assets/3270-LICENSE.txt",
+      "size": 2675,
+      "sha256": "ef855fadca28e91a4123f7299bd79dcd78a7e19dfc364039790bb75bdedd515a"
+    },
+    {
+      "path": "ui/assets/3270Medium.woff",
+      "size": 70460,
+      "sha256": "0cb8c1a76c81de5a9900434c1ba7196bbf05f799d47c638fc753628270ee288c"
+    },
+    {
+      "path": "ui/assets/grain.png",
+      "size": 7289,
+      "sha256": "873dd3b865e4d550ef1980b76468163be00f7a1a55a1e147d7d5106eb677e2f9"
+    },
+    {
+      "path": "ui/core.js",
+      "size": 7659,
+      "sha256": "18576c88f8e1adb5f3f1756d156ca68ff386a089804d47c229d30ee95fdd1352"
+    },
+    {
+      "path": "ui/font.js",
+      "size": 94340,
+      "sha256": "52ed770f8d2451a47f90d7a18b916c935bc08b367b013160f4b49a21b4e9ed11"
+    },
+    {
+      "path": "ui/index.html",
+      "size": 5859,
+      "sha256": "a96a90b3507a817deb417383644ed2aee87d7e9bfe872abfd1fe752b27c0b825"
+    },
+    {
+      "path": "ui/visualization.js",
+      "size": 1251,
+      "sha256": "1164289e43b7cee196bc3dae9ab80d11f4175fcb450e032d7737d2bc77692a41"
+    }
+  ]
+}

@@ -20,6 +20,21 @@
         "horizontal",
         "vertical"
       ]
+    },
+    {
+      "id": "echo-terminal",
+      "name": "回波·终端歌词",
+      "version": "1.0.7",
+      "path": "themes/echo-terminal",
+      "download": "downloads/回波·终端歌词-1.0.7.zip",
+      "minEchoVersion": "26.10.16",
+      "license": "MIT",
+      "palettes": [
+        "amber"
+      ],
+      "layouts": [
+        "horizontal"
+      ]
     }
   ]
 }

@@ -1,0 +1,24 @@
+{
+  "type": "echo-workshop-theme-preset",
+  "schemaVersion": 1,
+  "id": "echio.el-telegraph-native",
+  "title": "回波·终端歌词",
+  "basePreset": "classic",
+  "runtime": {
+    "entry": "ui/index.html",
+    "presentation": "lyrics-view",
+    "capabilities": [
+      "playback:read",
+      "playback:control",
+      "lyrics:read",
+      "audio:spectrum"
+    ]
+  },
+  "description": "琥珀 EL 终端风格的原生歌词页。时间戳歌词、双语开关、分段进度、原生输出波形与独立 L/R 电平，内嵌 3270 字体。",
+  "light": {
+    "accent": "#ffb000"
+  },
+  "dark": {
+    "accent": "#ffb000"
+  }
+}
