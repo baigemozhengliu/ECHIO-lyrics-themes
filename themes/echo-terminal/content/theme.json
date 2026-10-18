@@ -19,6 +19,7 @@
     "accent": "#ffb000"
   },
   "dark": {
-    "accent": "#ffb000"
+    "accent": "#ffb000",
+    "motionEnabled": true
   }
 }

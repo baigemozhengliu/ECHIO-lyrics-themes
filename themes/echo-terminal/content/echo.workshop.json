@@ -23,18 +23,18 @@
     },
     {
       "path": "theme.json",
-      "size": 651,
-      "sha256": "e6f3aad29c62e0de825f3288434972d2324518fec7d7ab75d3cd7fa313d7819b"
+      "size": 654,
+      "sha256": "d7b7ec0d75c3479293c7acba5987c8c99dcaec8d980bd73484f668abaa434069"
     },
     {
       "path": "ui/app.css",
-      "size": 31287,
-      "sha256": "dbcf8b7d944e73537ae55fedd21e86339b26684d0d11c90e994a274c064bc40b"
+      "size": 31311,
+      "sha256": "02868e41b14678ca555f8a6eae891fcab3f295eb18e8bcfd290140d3c07cb9df"
     },
     {
       "path": "ui/app.js",
-      "size": 14633,
-      "sha256": "45f196b7906ddcf3e6656cc0333f7c6172081c9410c4cf2faf6bc6ad7ab4635a"
+      "size": 14973,
+      "sha256": "70ad9f824e6b9f1234534d80b1ce7f8b91a81286e640bf1fd85e6d7e3fb128f1"
     },
     {
       "path": "ui/assets/3270-LICENSE.txt",
@@ -53,8 +53,8 @@
     },
     {
       "path": "ui/core.js",
-      "size": 7659,
-      "sha256": "18576c88f8e1adb5f3f1756d156ca68ff386a089804d47c229d30ee95fdd1352"
+      "size": 10039,
+      "sha256": "7fa3f75c502fc92cff0290754afb4ded9ff097bd785ea247e25866aa70251f2d"
     },
     {
       "path": "ui/font.js",

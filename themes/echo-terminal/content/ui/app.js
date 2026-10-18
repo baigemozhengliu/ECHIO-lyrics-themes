@@ -70,6 +70,7 @@
   }
   const pending=new Map();
   const post=message=>parent.postMessage({protocolVersion:1,...message},'*');
+  function cancelPending(epoch){for(const [id,item] of pending){if(item.epoch!==epoch)continue;clearTimeout(item.timeout);pending.delete(id);}}
   function command(name,payload={}){
     if(!hostReady||!alive)return;
     const requestId=String(++request);
@@ -108,9 +109,10 @@
       if(!m.ok&&item.name!=='audio:getVisualization')notice('ECHO 未能完成操作。');schedule();return;
     }
     if(!['echo:workshop-ui:init','echo:workshop-ui:clock','echo:workshop-ui:state','echo:workshop-ui:lyrics','echo:workshop-ui:audio'].includes(m.type))return;
-    const previous=model.id;model.receive(m,now());
+    const previousEpoch=model.epoch,previousEpochValue=lyricEpoch;
+    if(!model.receive(m,now()))return;
     if(m.type==='echo:workshop-ui:init'){hostReady=true;post({type:'echo:workshop-ui:audio-configure',audioVisualization:audioOptions});}
-    if(previous!==model.id){lyricEpoch++;requestedTrack=null;lastKey='';visual.reset();}
+    if(previousEpoch!==model.epoch){lyricEpoch=previousEpochValue+1;requestedTrack=null;lastKey='';lastIndex=-1;lastAudioEvent=0;dragging=false;seekPointer=null;lastSeekValue=null;visual.reset();cancelPending(previousEpochValue);}
     if(m.type==='echo:workshop-ui:audio'&&model.capabilities.includes('audio:spectrum')){if(visual.accept(m,model.id,now()))lastAudioEvent=now();}
     visible=model.visible;requestLyrics();schedule();
   }

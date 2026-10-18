@@ -12,26 +12,67 @@
   class Receiver {
     constructor() {
       this.clock = null; this.primary = null; this.fallback = null;
-      this.track = null; this.docs = new Map(); this.audio = null; this.levels = null;
+      this.trackId = null; this.track = null; this.docs = new Map(); this.audio = null; this.levels = null;
       this.audioAt = 0; this.features = []; this.capabilities = []; this.visible = true;
       this.frameInterval = 100; this.generation = null; this.reducedMotion = false;
-      this.canPrevious = true; this.canNext = true; this.epoch = 0;
+      this.canPrevious = true; this.canNext = true; this.epoch = 0; this.duration = 0;
       this.pendingAudio = null; this.audioAvailable = false;
+      this.identityHold = null; this.switchGuard = null; this.pendingTrack = null;
     }
-    get id() { return this.clock?.currentTrackId ?? null; }
+    get id() { return this.trackId; }
+    switchTo(id, now) {
+      const from = this.trackId;
+      this.trackId = id;
+      this.primary = null; this.fallback = null; this.track = null;
+      this.docs.clear();
+      this.audio = null; this.audioAvailable = false; this.levels = null; this.audioAt = 0;
+      this.duration = 0; this.identityHold = null; this.pendingTrack = null;
+      if (this.pendingAudio?.message.trackId !== id) this.pendingAudio = null;
+      this.epoch++;
+      this.switchGuard = { from, to: id, until: now + 1200 };
+    }
     acceptPlayback(p, now, primary) {
       if (!p || !finite(p.positionSeconds) || !finite(p.durationSeconds)) return false;
       if (primary && !finite(p.sampledAtMs)) return false;
-      if (finite(p.generation) && finite(this.generation) && p.generation < this.generation) return false;
-      if (primary && this.primary && p.sampledAtMs < this.primary.sampledAtMs) return false;
-      const changed = p.currentTrackId !== this.id;
-      if (changed) {
-        this.primary = null; this.fallback = null; this.track = null;
-        this.audio = null; this.audioAvailable = false; this.levels = null; this.audioAt = 0; this.epoch++;
+      const nextId = p.currentTrackId ?? null;
+      const gen = finite(p.generation) ? p.generation : null;
+      const sameTrack = nextId === this.trackId;
+      if (gen !== null && this.generation !== null && gen < this.generation && (primary || sameTrack)) {
+        if (!primary && sameTrack) {
+          if (this.identityHold?.id === nextId) this.identityHold.until = now + 1600;
+          if (this.switchGuard?.to === nextId) this.switchGuard.until = now + 1600;
+        }
+        return false;
       }
-      if (finite(p.generation)) this.generation = p.generation;
-      const clean = { ...p, positionSeconds: Math.max(0, p.positionSeconds),
-        durationSeconds: Math.max(0, p.durationSeconds), playbackRate: finite(p.playbackRate) ? p.playbackRate : (this.primary?.playbackRate || 1) };
+      if (primary && sameTrack && this.primary && p.sampledAtMs < this.primary.sampledAtMs) return false;
+      let switched = false;
+      if (!sameTrack) {
+        const guard = this.switchGuard;
+        if (nextId !== null && guard && guard.from !== null && nextId === guard.from && now < guard.until) {
+          if (primary || gen === null || this.generation === null || gen <= this.generation) return false;
+        }
+        if (primary && nextId !== null && this.identityHold && now < this.identityHold.until && nextId !== this.identityHold.id) return false;
+        if (primary && gen !== null && this.generation !== null && gen <= this.generation) {
+          if (!this.pendingTrack || this.pendingTrack.id !== nextId) {
+            this.pendingTrack = { id: nextId, at: now };
+            return false;
+          }
+          if (now - this.pendingTrack.at < 250) return false;
+        }
+        this.switchTo(nextId, now);
+        switched = true;
+        if (nextId !== null) this.identityHold = { id: nextId, until: now + 1600 };
+      } else if (!primary) {
+        if (this.identityHold?.id === nextId) this.identityHold.until = now + 1600;
+        if (this.switchGuard?.to === nextId) this.switchGuard.until = now + 1600;
+      } else {
+        this.pendingTrack = null;
+      }
+      if (gen !== null) this.generation = switched || this.generation === null ? gen : Math.max(this.generation, gen);
+      const duration = Math.max(this.duration, finite(p.durationSeconds) ? p.durationSeconds : 0);
+      this.duration = duration;
+      const clean = { ...p, currentTrackId: nextId, positionSeconds: Math.max(0, p.positionSeconds),
+        durationSeconds: duration, playbackRate: finite(p.playbackRate) ? p.playbackRate : (this.primary?.playbackRate || 1) };
       if (primary) {
         this.primary = clean;
         if (!(this.fallback && now - p.sampledAtMs > 1500 && this.fallback.sampledAtMs > p.sampledAtMs)) this.clock = clean;
@@ -39,9 +80,10 @@
         if (!this.fallback || ['currentTrackId','state','positionSeconds','durationSeconds'].some(k => clean[k] !== this.fallback[k])) {
           this.fallback = { ...clean, sampledAtMs: now };
         }
-        if (!this.primary || !this.features.includes('clock') || now - this.primary.sampledAtMs > 1500 || clean.state !== this.primary.state) this.clock = this.fallback;
+        if (!this.primary || !this.features.includes('clock') || now - this.primary.sampledAtMs > 1500) this.clock = this.fallback;
       }
-      if (this.pendingAudio?.message.trackId === this.id && now - this.pendingAudio.at < 1500) {
+      if ((this.clock?.currentTrackId ?? null) !== this.trackId) this.clock = primary ? clean : this.fallback;
+      if (this.pendingAudio?.message.trackId === this.trackId && now - this.pendingAudio.at < 1500) {
         this.acceptAudio(this.pendingAudio.message, this.pendingAudio.at);
         this.pendingAudio = null;
       }
@@ -58,7 +100,7 @@
     }
     position(now) {
       const c = this.clock;
-      if (!c) return 0;
+      if (!c || (c.currentTrackId ?? null) !== this.trackId) return 0;
       const elapsed = clamp(now - c.sampledAtMs, 0, 1500);
       return clamp(c.positionSeconds + (c.state === 'playing' ? elapsed * c.playbackRate / 1000 : 0), 0, c.durationSeconds || Infinity);
     }
@@ -84,7 +126,8 @@
       if (m.type === 'echo:workshop-ui:clock' || m.type === 'echo:workshop-ui:state') {
         const p = m.clock || m.playback;
         if (p && !this.acceptPlayback(p, now, !!m.clock)) return false;
-        if (m.currentTrack !== undefined && (!m.currentTrack || m.currentTrack.id === this.id)) this.track = m.currentTrack;
+        if (m.currentTrack) { if (m.currentTrack.id === this.id) this.track = m.currentTrack; }
+        else if (m.currentTrack === null && this.track?.id !== this.id) this.track = null;
         if (m.motion && ('frameIntervalMs' in m.motion)) this.frameInterval = m.motion.frameIntervalMs === null ? null : Math.max(40, Number(m.motion.frameIntervalMs) || 100);
         if (m.playback?.canGoPrevious !== undefined) this.canPrevious = !!m.playback.canGoPrevious;
         if (m.playback?.canGoNext !== undefined) this.canNext = !!m.playback.canGoNext;
@@ -98,7 +141,7 @@
       return true;
     }
     meter(now) {
-      if (!this.capabilities.includes('audio:spectrum') || this.clock?.state !== 'playing' || now - this.audioAt > 1500) return { peak: null, rms: null };
+      if (!this.capabilities.includes('audio:spectrum') || this.clock?.currentTrackId !== this.trackId || this.clock?.state !== 'playing' || now - this.audioAt > 1500) return { peak: null, rms: null };
       const db = x => finite(x) ? clamp(x, -60, 0) : null;
       return { peak: db(this.levels?.peakDb), rms: db(this.levels?.rmsDb) };
     }

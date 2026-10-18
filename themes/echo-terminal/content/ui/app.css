@@ -407,8 +407,8 @@ body{display:block;padding:calc(12 * var(--u))}
 .scope{height:auto;min-height:0;padding:0;overflow:visible}
 .track-plot{left:calc(60 * var(--u));right:calc(16 * var(--u));top:calc(25 * var(--u));bottom:calc(28 * var(--u));overflow:visible}
 .track-plot canvas{filter:drop-shadow(0 0 .65px #ffb00060);image-rendering:auto}
-.track-plot .playhead{left:50%;right:auto;width:1px;box-shadow:0 0 1px #ffb00070;pointer-events:none}
-.track-plot .playhead:before{left:calc(-9 * var(--u));border-left-width:calc(9 * var(--u));border-right-width:calc(9 * var(--u));border-top-width:calc(7 * var(--u))}
+.track-plot .playhead{left:calc(50% - .5px);right:auto;width:1px;box-shadow:0 0 1px #ffb00070;pointer-events:none}
+.track-plot .playhead:before{left:50%;transform:translateX(-50%);border-left-width:calc(9 * var(--u));border-right-width:calc(9 * var(--u));border-top-width:calc(7 * var(--u))}
 .track-axis{left:calc(10 * var(--u));width:calc(34 * var(--u));top:calc(25 * var(--u));bottom:calc(28 * var(--u));font-size:calc(11 * var(--u))}
 .axis-unit{left:calc(10 * var(--u));top:calc(9 * var(--u));font-size:calc(10 * var(--u))}
 .time-axis{left:calc(60 * var(--u));right:calc(16 * var(--u));bottom:calc(8 * var(--u));font-size:calc(11 * var(--u))}
