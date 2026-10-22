@@ -11,10 +11,11 @@
       "playback:read",
       "playback:control",
       "lyrics:read",
-      "audio:spectrum"
+      "audio:spectrum",
+      "storage"
     ]
   },
-  "description": "琥珀 EL 终端风格的原生歌词页。时间戳歌词、双语开关、分段进度、原生输出波形与独立 L/R 电平，内嵌 3270 字体。",
+  "description": "琥珀 EL / 青绿 VFD / 绿色 CRT 可切换原生歌词页。时间戳歌词、双语、分段进度、原生波形与独立 L/R 电平；FX 调整内切换材质。",
   "light": {
     "accent": "#ffb000"
   },

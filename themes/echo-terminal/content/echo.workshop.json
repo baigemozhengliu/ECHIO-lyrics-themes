@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "id": "echio.el-telegraph-native",
   "title": "回波·终端歌词",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "content": {
     "kind": "theme",
     "entry": "theme.json"
@@ -23,18 +23,18 @@
     },
     {
       "path": "theme.json",
-      "size": 654,
-      "sha256": "d7b7ec0d75c3479293c7acba5987c8c99dcaec8d980bd73484f668abaa434069"
+      "size": 711,
+      "sha256": "21c3a651275ad0a5d5967549474717ffdb7625d0c2a263515e4b94dabcfd8478"
     },
     {
       "path": "ui/app.css",
-      "size": 31311,
-      "sha256": "02868e41b14678ca555f8a6eae891fcab3f295eb18e8bcfd290140d3c07cb9df"
+      "size": 37143,
+      "sha256": "2a63996784eddf5cdf9a6bdb8f2eda2b36b2f00d3efa01b3eefc758a574327a1"
     },
     {
       "path": "ui/app.js",
-      "size": 14973,
-      "sha256": "70ad9f824e6b9f1234534d80b1ce7f8b91a81286e640bf1fd85e6d7e3fb128f1"
+      "size": 16020,
+      "sha256": "00808dc628f7f6935160cf74cd08f2c1e90eb6ef9467fe4069e3609ee086fd20"
     },
     {
       "path": "ui/assets/3270-LICENSE.txt",
@@ -57,14 +57,34 @@
       "sha256": "7fa3f75c502fc92cff0290754afb4ded9ff097bd785ea247e25866aa70251f2d"
     },
     {
+      "path": "ui/crt.js",
+      "size": 3223,
+      "sha256": "c4e7baf342cb273645f76fe90fc11f8efa7586365d526ce845a90b0052ec56a9"
+    },
+    {
+      "path": "ui/display-fx.js",
+      "size": 5933,
+      "sha256": "e0db08045ee82f6fc7b8d53782e7768fd683a9c60852e282067a27077c32255d"
+    },
+    {
       "path": "ui/font.js",
       "size": 94340,
       "sha256": "52ed770f8d2451a47f90d7a18b916c935bc08b367b013160f4b49a21b4e9ed11"
     },
     {
+      "path": "ui/fx-controls.js",
+      "size": 11048,
+      "sha256": "05ed9acae4d4a82afdfe4a2b8ec99c9476ca0a0e87e8769c65090289e40b788e"
+    },
+    {
       "path": "ui/index.html",
-      "size": 5859,
-      "sha256": "a96a90b3507a817deb417383644ed2aee87d7e9bfe872abfd1fe752b27c0b825"
+      "size": 5994,
+      "sha256": "55793196726356c6fd0308f72d3bda07759042860be3881667479ed32f41801a"
+    },
+    {
+      "path": "ui/vfd.js",
+      "size": 5810,
+      "sha256": "29bfda860ea9fb154a412ea026fea0076a4f2951a390473aa3a3e8f2961d3a6f"
     },
     {
       "path": "ui/visualization.js",

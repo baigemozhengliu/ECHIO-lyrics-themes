@@ -14,14 +14,14 @@
 
 | 主题 | 风格与功能 | 下载 |
 | --- | --- | --- |
-| [回波·终端歌词](themes/echo-terminal/) | 琥珀 EL、时间戳歌词、译文开关、原生波形与 L/R 电平 | [1.0.7 ZIP](downloads/回波·终端歌词-1.0.7.zip?raw=true) |
+| [回波·终端歌词](themes/echo-terminal/) | 琥珀 EL、青绿 VFD、绿色 CRT；FX 调整三种材质与各自参数 | [1.0.8 ZIP](downloads/回波·终端歌词-1.0.8.zip?raw=true) |
 | [余白 · 物语歌词](themes/monogatari/) | 四种纯色、宋体微光、弱纹理、横竖排与小字译注 | [1.0.3 ZIP](downloads/monogatari-1.0.3.zip?raw=true) |
 
 ### 回波·终端歌词
 
 ![回波·终端歌词头图](themes/echo-terminal/art/header.png)
 
-琥珀色 EL 终端、IBM 3270 字体、电报式歌词、真实输出波形与独立声道电平。详见[使用说明与实机预览](themes/echo-terminal/)。
+琥珀色 EL、青绿点阵 VFD、绿色扫描线 CRT 三种材质；IBM 3270 字体、电报式歌词、真实输出波形与独立声道电平。详见[使用说明与界面预览](themes/echo-terminal/)。
 
 ### 余白 · 物语歌词
 

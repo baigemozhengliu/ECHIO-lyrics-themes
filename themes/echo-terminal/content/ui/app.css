@@ -1,4 +1,4 @@
-
+﻿
 :root{
   --bg:#050505;
   --amber:#ffb000;
@@ -441,3 +441,62 @@ body{padding-top:calc(var(--host-top) + 12 * var(--u))}
 #translation{font-family:'Microsoft YaHei Light','Yu Gothic Light','Noto Sans CJK SC','Microsoft YaHei',sans-serif;font-weight:300;text-shadow:none;opacity:.72}
 .seek-area:focus-within{outline:none;box-shadow:none}#seek,#seek:focus,#seek:focus-visible{outline:none;box-shadow:none;touch-action:none}
 .seek-area:has(#seek:focus-visible) .segmented{filter:brightness(1.25)}
+
+/* EL Industrial calibrated display material: single scene compositor, no nested optics. */
+.panel,.panel *,.panel *::before,.panel *::after{box-shadow:none!important;text-shadow:none!important;filter:none!important}
+.panel{color:var(--fx-core);filter:url(#el-scene)!important;background:#000}
+.panel:after{display:none}
+.el-global-grain{position:fixed;z-index:5;pointer-events:none;opacity:.126;background-image:url('assets/grain.png');background-repeat:repeat;mix-blend-mode:multiply}
+.current-box{background:transparent;border-color:color-mix(in srgb,var(--fx-core) 60%,transparent)}
+.current-box .text{color:var(--fx-core);overflow:clip!important;overflow-clip-margin:20px}
+.track-axis{border-right-color:color-mix(in srgb,var(--fx-core) 31%,transparent)}
+.zero-line{border-top-color:color-mix(in srgb,var(--fx-core) 24%,transparent)}
+.gridline{border-color:color-mix(in srgb,var(--fx-core) 14%,transparent)}
+#notice:not(:empty){border-top-color:color-mix(in srgb,var(--fx-core) 33%,transparent)}
+/* Whole-device-pixel tiles avoid alternating coverage from the former 2.5px radial pattern. */
+.fill{background-image:var(--level-tile)!important;background-size:var(--level-step) var(--level-step)!important;background-position:0 0;background-repeat:repeat;image-rendering:pixelated}
+
+.fx-trigger{position:fixed;z-index:7;padding:0;border:0;color:#000;background:transparent;font:12px IBM3270,'Microsoft YaHei',monospace;cursor:pointer}
+.fx-trigger span{opacity:0}.fx-trigger:hover span,.fx-trigger:focus-visible span{opacity:1}.fx-trigger:focus-visible{outline:1px solid var(--amber);outline-offset:3px}
+.fx-dialog{box-sizing:border-box;width:min(560px,92vw);max-height:85vh;overflow:auto;margin:auto;padding:24px;border:1px solid var(--amber);background:#080700;color:var(--amber);font:14px IBM3270,'Microsoft YaHei',monospace;box-shadow:0 0 20px #000}
+.fx-dialog::backdrop{background:#0009}.fx-dialog header,.fx-dialog footer{display:flex;justify-content:space-between;align-items:center;gap:16px}.fx-dialog header{border-bottom:1px solid #786322;padding-bottom:16px}.fx-dialog small{letter-spacing:.12em;font-size:11px}.fx-dialog h2{margin:6px 0 0;font-size:22px;font-weight:400}
+.fx-dialog button{color:inherit;border:1px solid #786322;background:#000;padding:7px 12px;font:inherit}.fx-dialog button:hover:not(:disabled),.fx-dialog button[aria-pressed=true]{background:var(--amber);color:#000}.fx-dialog button:disabled{opacity:.4;cursor:default}
+.fx-modes,.fx-switches{display:flex;gap:12px;margin:18px 0;flex-wrap:wrap}.fx-switches label{display:flex;gap:6px;align-items:center}.fx-dialog input{accent-color:var(--amber)}.fx-sliders{display:grid;grid-template-columns:1fr 1fr;gap:18px 24px}.fx-slider{display:grid;grid-template-columns:1fr auto;gap:8px}.fx-slider output{font-variant-numeric:tabular-nums}.fx-slider input{grid-column:1/-1;width:100%;margin:0;cursor:pointer}.fx-reserved{font-size:11px;line-height:1.6;opacity:.6;margin:20px 0}.fx-dialog footer{border-top:1px solid #786322;padding-top:16px;font-size:11px}.fx-dialog footer button{flex-shrink:0}
+@media(max-width:480px){.fx-sliders{grid-template-columns:1fr}.fx-dialog{padding:16px}}
+
+.fx-slider input[type=range]{appearance:none;height:16px;background:transparent;outline-offset:3px}
+.fx-slider input[type=range]::-webkit-slider-runnable-track{height:3px;background:#4b411c;border:1px solid #9b8320}
+.fx-slider input[type=range]::-webkit-slider-thumb{appearance:none;width:8px;height:14px;margin-top:-6px;border:1px solid var(--amber);border-radius:0;background:var(--amber)}
+.fx-slider input[type=range]::-moz-range-track{height:2px;background:#9b8320}.fx-slider input[type=range]::-moz-range-thumb{width:8px;height:14px;border:0;border-radius:0;background:var(--amber)}
+.fx-negative,.fx-negative *{pointer-events:none!important;user-select:none}
+/* VFD / CRT scene modes. EL remains in display-fx.css and is not modified here. */
+html[data-fx-mode="vfd"] body{
+  background-color:#020608;
+  background-image:
+    radial-gradient(circle at 50% 18%, rgba(25,80,84,.35), transparent 55%),
+    linear-gradient(180deg, rgba(7,19,22,.9), rgba(2,6,8,.98)),
+    repeating-linear-gradient(0deg, rgba(67,142,131,var(--vfd-grid-alpha,.12)) 0 var(--vfd-grid-gap,.6px), transparent var(--vfd-grid-gap,.6px) var(--vfd-grid-pitch,3px)),
+    repeating-linear-gradient(90deg, rgba(67,142,131,var(--vfd-grid-alpha,.12)) 0 var(--vfd-grid-gap,.6px), transparent var(--vfd-grid-gap,.6px) var(--vfd-grid-pitch,3px));
+}
+html[data-fx-mode="crt"] body{background:#010402}
+html[data-fx-mode="vfd"] .panel,
+html[data-fx-mode="crt"] .panel{background:transparent!important}
+html[data-fx-mode="vfd"] .panel{filter:url(#vfd-scene)!important}
+html[data-fx-mode="crt"] .panel{filter:url(#crt-scene)!important}
+html[data-fx-mode="vfd"] .el-global-grain,
+html[data-fx-mode="crt"] .el-global-grain{display:none!important}
+.fx-mode-overlay{position:fixed;z-index:6;pointer-events:none;display:none}
+html[data-fx-mode="vfd"] .fx-mode-overlay[data-mode="vfd"]{
+  display:block;
+  background:
+    linear-gradient(112deg, rgba(190,255,246,var(--vfd-glass-alpha,.07)), transparent 28%, transparent 66%, rgba(190,255,246,var(--vfd-glass-alpha,.07))),
+    radial-gradient(circle at 50% 45%, transparent 42%, rgba(0,0,0,var(--vfd-vignette,.4)));
+  box-shadow:inset 0 0 80px rgba(0,0,0,var(--vfd-glass-depth,.45));
+}
+html[data-fx-mode="crt"] .fx-mode-overlay[data-mode="crt"]{
+  display:block;
+  background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,var(--crt-scan,.27)) 0 calc(var(--crt-pitch,2.7px) * .43), transparent calc(var(--crt-pitch,2.7px) * .43) var(--crt-pitch,2.7px)),
+    linear-gradient(112deg, rgba(80,255,130,.035), transparent 30%, transparent 70%, rgba(0,0,0,.25));
+  box-shadow:inset 0 0 90px rgba(0,0,0,.5);
+}
